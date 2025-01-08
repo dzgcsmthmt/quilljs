@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quill Radio Button Example</title>
+        <link
+            href="https://cdn.bootcdn.net/ajax/libs/quill/2.0.2/quill.snow.css"
+            rel="stylesheet"
+        />
+        <style>
+            .ql-editor .quill-radio-button {
+                display: inline;
+                margin-right: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="editor"></div>
+
+        <script src="./quill.min.js"></script>
+        <!--   <script src="./video.js"></script> -->
+        <script src="./radio.js"></script>
+        <script>
+            const toolbarOptions = [
+                [{ header: "1" }, { header: "2" }, { font: [] }],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["bold", "italic", "underline"],
+                ["link"],
+                [{ align: [] }],
+                ["radioButton"],
+            ];
+
+            const quill = new Quill("#editor", {
+                modules: {
+                    toolbar: toolbarOptions,
+                },
+                theme: "snow",
+            });
+
+            const radioButtonButton = document.createElement("button");
+            radioButtonButton.innerText = "Radio";
+            let index = 1;
+            radioButtonButton.addEventListener("click", () => {
+                const range = quill.getSelection();
+                if (range) {
+                    quill.insertEmbed(range.index, "radio", {
+                        name: "option1",
+                        value: "" + index++,
+                    });
+                    /*  let range = quill.getSelection(true);
+                    quill.insertText(range.index, "\n", Quill.sources.USER);
+                    let url =
+                        "https://www.youtube.com/embed/QHH3iSeDBLo?showinfo=0";
+                    quill.insertEmbed(
+                        range.index + 1,
+                        "video",
+                        url,
+                        Quill.sources.USER
+                    );
+                    quill.formatText(range.index + 1, 1, {
+                        height: "170",
+                        width: "400",
+                    });
+                    quill.setSelection(range.index + 2, Quill.sources.SILENT); */
+                }
+            });
+
+            const toolbarContainer = [
+                ...document.querySelectorAll(".ql-formats"),
+            ].at(-1);
+            toolbarContainer.appendChild(radioButtonButton);
+        </script>
+    </body>
+</html>
